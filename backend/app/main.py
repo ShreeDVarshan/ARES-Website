@@ -41,6 +41,9 @@ app.include_router(ws_router)
 @app.on_event("startup")
 async def startup_event():
     """Auto-seed database on first deploy if empty. Retries with backoff."""
+    import os
+    if os.environ.get("TESTING") == "true":
+        return
     import asyncio
     for attempt in range(1, 8):
         try:
